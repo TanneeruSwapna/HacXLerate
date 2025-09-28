@@ -44,7 +44,7 @@ if (cluster.isMaster) {
 const allowedOrigins = [
     'http://localhost:5173',          // Your local frontend development address
     'http://localhost:3000',          // A common local address
-    'https://lume-sigma.vercel.app/' // If you published your frontend
+    'https://lume-sigma.vercel.app' // If you published your frontend
 ];
 
 const corsOptions = {
