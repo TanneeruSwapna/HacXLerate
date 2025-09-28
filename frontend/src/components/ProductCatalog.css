@@ -1,139 +1,166 @@
-/* Product Catalog Component Styles */
-.catalog-container {
-    max-width: 1400px;
-    margin: 0 auto;
+/* --- Base Variables & Typography --- */
+:root {
+    /* Business/Corporate Palette */
+    --color-primary: #1e3a8a;       /* Deep Blue for main actions/buttons */
+    --color-primary-dark: #1e40af;  /* Slightly darker on hover */
+    --color-secondary: #059669;     /* Emerald Green for success/price */
+    --color-secondary-light: #d1fae5; /* Light green background */
+    --color-text-dark: #1f2937;     /* Main dark text */
+    --color-text-medium: #4b5563;   /* Secondary text/descriptions */
+    --color-background-light: #f9fafb; /* Light background for sections */
+    --color-border: #e5e7eb;        /* Subtle border color */
+    --color-error: #dc2626;         /* Red for errors */
+
+    /* Font stack prioritizing readability */
+    --font-stack-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
 }
 
-.catalog-header {
-    margin-bottom: 2rem;
+body {
+    font-family: var(--font-stack-sans);
+    line-height: 1.6;
+    color: var(--color-text-dark);
 }
 
-.catalog-header h1 {
-    font-size: 2.5rem;
-    color: #2c3e50;
-    margin-bottom: 1rem;
+/* --- Animations --- */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-.catalog-controls {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding: 1rem;
+/* Base animation for the product card */
+.product-card {
     background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease; /* Added transform transition */
+    
+    /* Animation properties for individual cards */
+    opacity: 0; 
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+    /* The delay is set below using CSS counters */
 }
 
-.search-section {
-    flex: 1;
-    min-width: 300px;
-}
-
-.search-input {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    font-size: 1rem;
-    outline: none;
-}
-
-.filter-section {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.filter-select {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
-    border-radius: 20px;
-    background: white;
-    cursor: pointer;
-}
-
-.view-controls {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.view-btn {
-    padding: 0.5rem 1rem;
-    border: 1px solid #ddd;
-    background: white;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.view-btn.active {
-    background: #667eea;
-    color: white;
-    border-color: #667eea;
-}
-
-.price-filter {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.price-filter label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-}
-
-.price-filter input[type="range"] {
-    width: 100%;
-    margin-top: 0.5rem;
-}
-
+/* Staggered animation using CSS counters */
+/* We reset a counter on the parent, then increment it for each child
+   and use calc() to apply a delay based on its count. */
 .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: 1.5rem;
+    /* Initialize CSS counter */
+    counter-reset: product-item-counter; 
 }
 
-.products-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.products-grid .product-card {
+    /* Increment counter for each card */
+    counter-increment: product-item-counter;
+    /* Calculate delay based on counter value */
+    animation-delay: calc(var(--product-card-base-delay, 0s) + (counter(product-item-counter) - 1) * 0.08s); 
+    /* You can adjust 0.08s for faster/slower stagger */
 }
 
-.product-card {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
 
+/* Subtle Hover Animation: Lift and Shadow */
 .product-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 15px rgba(30, 58, 138, 0.15); /* Primary color shadow for professional feel */
+    transform: translateY(-3px) scale(1.01); /* Slight lift and subtle scale */
 }
 
-.product-card.list {
-    display: flex;
-    flex-direction: row;
+/* --- Buttons and Form Elements (Adjusted to Primary Color) --- */
+.btn {
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none; /* For Link components */
 }
+
+.btn-primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    transform: translateY(-1px); /* Subtle press effect */
+}
+
+.btn-success {
+    background-color: var(--color-secondary);
+    border: 1px solid var(--color-secondary);
+    color: white;
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-success:hover:not(:disabled) {
+    background-color: #047857; /* Darker secondary green */
+    transform: translateY(-1px);
+}
+
+.btn-success:disabled {
+    background-color: #d1d5db; /* Lighter grey for disabled */
+    border-color: #d1d5db;
+    color: #9ca3af;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Alert Error (Updated to use business error red) */
+.alert-error {
+    background-color: #fee2e2; /* Light red */
+    color: var(--color-error);
+    border: 1px solid #f87171; /* Medium red border */
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    animation: fadeIn 0.4s ease-out forwards; /* Fade in alert */
+}
+
+/* Form Inputs (Professional look) */
+.form-group {
+    margin-bottom: 1rem; /* Added spacing for form groups */
+}
+
+.form-input, .form-select {
+    border: 1px solid var(--color-border);
+    padding: 0.6rem 1rem;
+    border-radius: 0.375rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    background-color: white; /* Ensure consistent background */
+    color: var(--color-text-dark);
+}
+
+.form-input:focus, .form-select:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.2); /* Subtle blue focus ring */
+    outline: none;
+}
+
+/* --- Product Card Details (Color Refinements) --- */
 
 .product-image {
-    width: 100%;
     height: 200px;
+    background: var(--color-background-light); /* Consistent light background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     overflow: hidden;
-}
-
-.product-card.list .product-image {
-    width: 150px;
-    height: 150px;
-    flex-shrink: 0;
 }
 
 .product-image img {
@@ -142,134 +169,195 @@
     object-fit: cover;
 }
 
-.product-info {
-    padding: 1.5rem;
-    flex: 1;
+.placeholder-icon {
+    font-size: 3rem;
+    color: #9ca3af;
 }
 
-.product-header {
-    margin-bottom: 1rem;
+.product-info {
+    padding: 1.5rem;
 }
 
 .product-name {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 0.25rem;
-}
-
-.product-brand {
-    color: #666;
-    font-size: 0.9rem;
+    font-size: 1.25rem; /* Slightly larger name */
+    font-weight: 700;
+    color: var(--color-text-dark);
+    margin-bottom: 0.5rem;
 }
 
 .product-description {
-    color: #666;
-    margin-bottom: 1rem;
+    color: var(--color-text-medium);
+    font-size: 0.9rem;
     line-height: 1.5;
-}
-
-.product-specs {
     margin-bottom: 1rem;
+    height: 3.6em; /* Limit description to 3 lines */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.specs {
+/* Product Meta Tags (Subtle, professional tags) */
+.product-meta {
     display: flex;
-    flex-wrap: wrap;
     gap: 0.5rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
 }
 
-.specs span {
-    background: #f8f9fa;
-    padding: 0.25rem 0.5rem;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    color: #666;
+.product-category, .product-brand {
+    padding: 0.25rem 0.6rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap; /* Prevent tags from breaking */
+}
+
+.product-category {
+    background: #e0e7ff; /* Light primary blue background */
+    color: var(--color-primary);
+}
+
+.product-brand {
+    background: var(--color-border); /* Light grey for secondary tag */
+    color: var(--color-text-medium);
 }
 
 .product-pricing {
     margin-bottom: 1rem;
 }
 
-.price-section {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.main-price {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #2c3e50;
+.product-price {
+    font-size: 1.5rem; /* Prominent price */
+    font-weight: 800;
+    color: var(--color-secondary); /* Success/Green price */
+    display: block;
 }
 
 .wholesale-price {
-    color: #666;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+    color: var(--color-text-medium);
 }
 
-.inventory-info {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.stock {
-    color: #28a745;
+.product-creator {
+    font-size: 0.75rem;
+    color: var(--color-text-medium);
+    margin-bottom: 1rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-background-light);
+    border-radius: 0.25rem;
+    display: inline-block;
 }
 
 .product-actions {
     display: flex;
     gap: 0.5rem;
+    margin-top: auto; /* Push actions to the bottom of the card */
+}
+
+/* --- Utility Classes & Layout --- */
+
+.page-container {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border); /* Add a subtle separator */
+    padding-bottom: 1.5rem;
+}
+
+.page-title {
+    font-size: 2.25rem; /* Slightly larger title */
+    font-weight: 700;
+    color: var(--color-text-dark);
+}
+
+.page-subtitle {
+    color: var(--color-text-medium);
+    font-size: 1.05rem;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+    gap: 1rem;
 }
 
-.add-to-cart-btn {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    flex: 1;
+.card {
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Subtle default shadow */
 }
 
-.add-to-cart-btn:hover {
-    background: #218838;
+.card-body {
+    padding: 1.5rem;
 }
 
-.add-to-cart-btn:disabled {
-    background: #ccc;
-    cursor: not-allowed;
+.mb-4 { margin-bottom: 1.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.p-5 { padding: 3rem; }
+
+.grid-auto {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    align-items: end; /* Align filter inputs nicely */
 }
 
-.wishlist-btn {
-    background: none;
-    border: 1px solid #ddd;
-    padding: 0.75rem;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: all 0.3s;
-}
-
-.wishlist-btn:hover {
-    background: #f8f9fa;
-    border-color: #667eea;
-    color: #667eea;
-}
-
-.no-products {
+.loading {
     text-align: center;
     padding: 3rem;
-    color: #666;
+    font-size: 1.2rem;
+    color: var(--color-text-medium);
+    animation: fadeIn 0.5s ease-out forwards;
 }
 
-.no-products h3 {
-    margin-bottom: 0.5rem;
-    color: #2c3e50;
+.text-center {
+    text-align: center;
+}
+
+/* --- Responsive adjustments --- */
+@media (max-width: 768px) {
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+    .product-info {
+        padding: 1rem;
+    }
+    .product-image {
+        height: 150px;
+    }
+    .grid-auto {
+        grid-template-columns: 1fr; /* Stack filters on small screens */
+    }
+    .page-title {
+        font-size: 1.75rem;
+    }
+    .flex-between {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .flex-between .btn {
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    .page-container {
+        padding: 1rem;
+    }
+    .product-card {
+        margin: 0 auto; /* Center single column cards */
+        max-width: 350px;
+    }
 }

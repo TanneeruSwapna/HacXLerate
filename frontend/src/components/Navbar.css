@@ -1,0 +1,263 @@
+/* --- Business Class Palette --- */
+/* Primary: Deep Corporate Blue/Purple (#283593 - Indigo, #512DA8 - Deep Purple) */
+/* Accent: Gold/Amber (#FFC107 - Amber) */
+
+.navbar {
+    /* Gradient Background for Premium Feel */
+    background: linear-gradient(90deg, #283593, #512DA8); 
+    border-bottom: 2px solid #FFC107; /* Gold accent line */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Stronger, professional shadow */
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 70px; /* Slightly taller for a more imposing look */
+}
+
+/* Logo Section */
+.navbar-logo { flex-shrink: 0; }
+.logo { display: flex; align-items: center; gap: 0.5rem; }
+
+.logo-icon {
+    font-size: 1.8rem; /* Larger icon */
+    color: #FFC107; /* Gold/Amber Accent */
+}
+
+.logo-text {
+    font-size: 1.5rem; /* Larger, bolder text */
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+/* Navigation Links */
+.navbar-nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* Increased spacing */
+    flex: 1;
+    justify-content: center;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    color: #E3F2FD; /* Light Blue/White contrast */
+    font-weight: 600; /* Bolder text */
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.2); /* Stronger hover effect */
+}
+
+.nav-link.active {
+    color: #FFC107; /* Gold active link */
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 8px rgba(255, 193, 7, 0.5); /* Subtle glow */
+}
+
+/* Right Section */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cart-link,
+.profile-link {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 0.8rem;
+    text-decoration: none;
+    color: #E3F2FD;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.cart-link:hover,
+.profile-link:hover {
+    color: #FFC107; /* Gold on hover */
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #FFC107; /* Gold badge */
+    color: #283593; /* Dark blue text on badge */
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: 50%;
+    min-width: 1.5rem;
+    text-align: center;
+    border: 1px solid #ffffff;
+}
+
+/* Logout Button (Primary Action for Logged In User) */
+.logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    background: #FFC107; /* Gold button */
+    border: 1px solid #FFC107;
+    color: #283593; /* Dark blue text */
+    font-weight: 700;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logout-btn:hover {
+    background: #ffdb85;
+    border-color: #ffdb85;
+    color: #283593;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.5);
+}
+
+/* Register Button (When not logged in) */
+.register-btn {
+    /* Use the same styling as logout for prominence */
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.6rem 1.2rem;
+    background: #FFC107;
+    border: 1px solid #FFC107;
+    color: #283593;
+    font-weight: 700;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none; /* Important for Link component */
+}
+
+.register-btn:hover {
+    background: #ffdb85;
+    border-color: #ffdb85;
+    color: #283593;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.5);
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    background: none;
+    border: 1px solid #ffffff;
+    font-size: 1.6rem;
+    color: #FFC107;
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: all 0.3s ease;
+}
+.mobile-menu-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    display: none;
+    background: #1A237E; /* Solid dark color for mobile dropdown */
+    border-top: 1px solid #512DA8;
+    padding: 1rem 0;
+}
+
+.mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    text-decoration: none;
+    color: #E3F2FD;
+    font-weight: 500;
+    border-left: 5px solid transparent; /* Elegant border for status */
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-link:hover {
+    color: #FFC107;
+    background-color: #283593;
+    border-left-color: #FFC107;
+}
+
+.mobile-nav-link.active {
+    color: #FFC107;
+    background-color: #283593;
+    border-left-color: #FFC107;
+    font-weight: 600;
+}
+
+.mobile-logout-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background: none;
+    border: none;
+    color: #E3F2FD;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: left;
+    border-left: 5px solid transparent;
+}
+
+.mobile-logout-btn:hover {
+    background: #283593;
+    color: #FFC107;
+    border-left-color: #FFC107;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-nav {
+        display: none;
+    }
+
+    /* Hide desktop actions except the mobile button */
+    .navbar-actions > .cart-link,
+    .navbar-actions > .profile-link,
+    .navbar-actions > .logout-btn,
+    .navbar-actions > .profile-link,
+    .navbar-actions > .register-btn {
+        display: none;
+    }
+
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .mobile-menu {
+        display: block;
+    }
+
+    .navbar-container {
+        padding: 0 1rem;
+    }
+}

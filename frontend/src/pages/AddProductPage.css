@@ -1,0 +1,10 @@
+.add-product-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px 0;
+}
+
+.add-product-page .add-product-container {
+    margin: 20px auto;
+    max-width: 900px;
+}

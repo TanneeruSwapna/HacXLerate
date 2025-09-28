@@ -31,6 +31,7 @@ const ProductSchema = new mongoose.Schema({
   },
   tags: [{ type: String }],
   isActive: { type: Boolean, default: true },
+  createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });
