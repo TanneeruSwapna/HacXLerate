@@ -84,6 +84,14 @@ function Navbar({ user, cartCount, onLogout, isAuthenticated }) {
                                 <span className="nav-icon">🏠</span>
                                 Home
                             </Link>
+                            <Link
+                                to="/about"
+                                className={`nav-link ${isActive('/about') ? 'active' : ''}`}
+                                onClick={handleNavClick}
+                            >
+                                <span className="nav-icon">ℹ️</span>
+                                About
+                            </Link>
 
                             <Link
                                 to="/products"
