@@ -14,6 +14,9 @@ const productsRoutes = require('./routes/products');
 const recommendationsRoutes = require('./routes/recommendations');
 const purchasesRoutes = require('./routes/purchases');
 const cartRoutes = require('./routes/cart');
+const dashboardRoutes = require('./routes/dashboard');
+const analyticsRoutes = require('./routes/analytics');
+const userRoutes = require('./routes/user');
 const errorHandler = require('./middleware/errorHandler');
 
 if (cluster.isMaster) {
@@ -47,6 +50,9 @@ if (cluster.isMaster) {
   app.use('/api/recommendations', recommendationsRoutes);
   app.use('/api/purchases', purchasesRoutes);
   app.use('/api/cart', cartRoutes);
+  app.use('/api/dashboard', dashboardRoutes);
+  app.use('/api/analytics', analyticsRoutes);
+  app.use('/api/user', userRoutes);
 
   // Global error handler
   app.use(errorHandler);

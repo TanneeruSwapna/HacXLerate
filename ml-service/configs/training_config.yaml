@@ -1,0 +1,192 @@
+# Training Configuration for B2B Marketplace ML Models
+
+# Data Configuration
+data:
+  dataset: "custom_b2b"  # Options: custom_b2b, retailrocket, amazon, movielens
+  batch_size: 1024
+  validation_split: 0.2
+  test_split: 0.1
+  min_interactions_per_user: 5
+  min_interactions_per_item: 3
+
+# Model Configurations
+models:
+  # Neural Collaborative Filtering
+  neural_collaborative:
+    enabled: true
+    embedding_dim: 50
+    hidden_layers: [128, 64, 32]
+    learning_rate: 0.001
+    epochs: 100
+    batch_size: 1024
+    dropout: 0.2
+    regularization: 0.01
+    early_stopping_patience: 10
+    
+  # Content-Based Filtering
+  content_based:
+    enabled: true
+    similarity_threshold: 0.7
+    feature_weights:
+      category: 0.4
+      brand: 0.3
+      price: 0.2
+      rating: 0.1
+    similarity_metric: "cosine"  # Options: cosine, euclidean, manhattan
+    
+  # Collaborative Filtering
+  collaborative_filtering:
+    enabled: true
+    similarity_metric: "cosine"  # Options: cosine, pearson, jaccard
+    min_similarity: 0.1
+    max_neighbors: 50
+    min_common_items: 5
+    
+  # Hybrid Recommender
+  hybrid:
+    enabled: true
+    model_weights:
+      neural_collaborative: 0.4
+      content_based: 0.3
+      collaborative_filtering: 0.3
+    ensemble_method: "weighted"  # Options: weighted, voting, stacking
+
+# Training Configuration
+training:
+  save_models: true
+  model_dir: "models/checkpoints"
+  evaluate_models: true
+  cross_validation: false
+  cv_folds: 5
+  
+  # Hyperparameter Tuning
+  hyperparameter_tuning:
+    enabled: false
+    method: "grid_search"  # Options: grid_search, random_search, bayesian
+    max_trials: 50
+    
+  # Early Stopping
+  early_stopping:
+    enabled: true
+    patience: 10
+    min_delta: 0.001
+    
+  # Learning Rate Scheduling
+  lr_scheduling:
+    enabled: true
+    scheduler: "reduce_on_plateau"  # Options: step, exponential, reduce_on_plateau
+    factor: 0.5
+    patience: 5
+
+# Evaluation Metrics
+evaluation:
+  metrics:
+    - "precision@10"
+    - "recall@10"
+    - "ndcg@10"
+    - "map@10"
+    - "coverage"
+    - "diversity"
+    - "novelty"
+  
+  # A/B Testing
+  ab_testing:
+    enabled: false
+    test_size: 0.1
+    duration_days: 30
+
+# Data Processing
+preprocessing:
+  # Feature Engineering
+  feature_engineering:
+    enabled: true
+    categorical_encoding: "one_hot"  # Options: one_hot, label, target
+    numerical_scaling: "standard"    # Options: standard, minmax, robust
+    text_features: false
+    
+  # Data Augmentation
+  data_augmentation:
+    enabled: false
+    synthetic_samples: 1000
+    noise_factor: 0.1
+    
+  # Outlier Detection
+  outlier_detection:
+    enabled: true
+    method: "isolation_forest"  # Options: isolation_forest, local_outlier_factor
+    contamination: 0.1
+
+# Performance Optimization
+optimization:
+  # GPU Settings
+  gpu:
+    enabled: true
+    device: "auto"  # Options: auto, cuda, cpu
+    memory_fraction: 0.8
+    
+  # Parallel Processing
+  parallel:
+    enabled: true
+    n_jobs: -1  # Use all available cores
+    
+  # Memory Management
+  memory:
+    batch_processing: true
+    cache_size: 1000
+    cleanup_frequency: 100
+
+# Logging and Monitoring
+logging:
+  level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR
+  file: "logs/training.log"
+  console: true
+  
+monitoring:
+  enabled: true
+  metrics_logging: true
+  model_performance_tracking: true
+  data_drift_detection: true
+  
+# Model Deployment
+deployment:
+  # Model Versioning
+  versioning:
+    enabled: true
+    version_format: "v{major}.{minor}.{patch}"
+    auto_increment: true
+    
+  # Model Registry
+  registry:
+    enabled: false
+    backend: "mlflow"  # Options: mlflow, wandb, neptune
+    
+  # API Configuration
+  api:
+    enabled: true
+    host: "0.0.0.0"
+    port: 5001
+    workers: 4
+    
+  # Caching
+  caching:
+    enabled: true
+    backend: "redis"  # Options: redis, memcached, in_memory
+    ttl: 3600  # Time to live in seconds
+
+# Security
+security:
+  # Model Encryption
+  encryption:
+    enabled: false
+    algorithm: "AES256"
+    
+  # Access Control
+  access_control:
+    enabled: false
+    authentication: "jwt"
+    
+  # Data Privacy
+  privacy:
+    enabled: false
+    anonymization: true
+    differential_privacy: false

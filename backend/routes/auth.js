@@ -9,7 +9,13 @@ const router = express.Router();
 
 const registerSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(6).required()
+  password: Joi.string().min(6).required(),
+  businessInfo: Joi.object({
+    companyName: Joi.string().required(),
+    businessType: Joi.string().valid('retailer', 'wholesaler', 'distributor', 'manufacturer').required(),
+    industry: Joi.string(),
+    businessSize: Joi.string().valid('small', 'medium', 'large', 'enterprise').required()
+  }).required()
 });
 
 const loginSchema = Joi.object({
@@ -23,14 +29,23 @@ router.post('/register', async (req, res, next) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    const { email, password } = req.body;
+    const { email, password, businessInfo } = req.body;
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).send('User exists');
 
     const hashedPassword = bcrypt.hashSync(password, 10);
-    const user = await User.create({ email, password: hashedPassword });
+    const user = await User.create({
+      email,
+      password: hashedPassword,
+      businessInfo: {
+        ...businessInfo,
+        address: {}
+      }
+    });
+
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     logger.info(`User registered: ${email}`);
-    res.status(201).json({ message: 'User created' });
+    res.status(201).json({ message: 'User created', token });
   } catch (err) {
     next(err);
   }
