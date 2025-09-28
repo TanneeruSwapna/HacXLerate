@@ -3,7 +3,10 @@ import axios from 'axios';
 import io from 'socket.io-client';
 import './Recommendations.css';
 
-const socket = io('http://localhost:5000');
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
+
+const socket = io(API_BASE_URL);
 
 function Recommendations() {
   const [recs, setRecs] = useState([]);
@@ -16,7 +19,7 @@ function Recommendations() {
     const fetchRecs = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/recommendations', {
+        const res = await axios.get(`${API_BASE_URL}/recommendations`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setRecs(res.data);
@@ -77,7 +80,7 @@ function Recommendations() {
     // Fallback: try to lookup product by name
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/products?search=' + encodeURIComponent(rec.product), {
+      const res = await axios.get(`${API_BASE_URL}/products?search=` + encodeURIComponent(rec.product), {
         headers: { Authorization: `Bearer ${token}` }
       });
       const list = res.data || [];
@@ -99,12 +102,12 @@ function Recommendations() {
       }
 
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/cart/add', { productId, quantity: 1 }, {
+      await axios.post(`${API_BASE_URL}/cart/add`, { productId, quantity: 1 }, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
       // Refresh cart count for navbar
-      const cartRes = await axios.get('http://localhost:5000/api/cart', { headers: { Authorization: `Bearer ${token}` } });
+      const cartRes = await axios.get(`${API_BASE_URL}/cart`, { headers: { Authorization: `Bearer ${token}` } });
       const total = (cartRes.data.items || []).reduce((s, it) => s + (it.quantity || 0), 0);
       window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: total } }));
       alert('Added to cart');

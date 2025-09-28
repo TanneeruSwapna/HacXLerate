@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './Dashboard.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
+
 function Dashboard() {
   const [stats, setStats] = useState({
     totalOrders: 0,
@@ -17,10 +20,10 @@ function Dashboard() {
       try {
         const token = localStorage.getItem('token');
         const [statsRes, recsRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/dashboard/stats', {
+          axios.get(`${API_BASE_URL}/dashboard/stats`, {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          axios.get('http://localhost:5000/api/recommendations', {
+          axios.get(`${API_BASE_URL}/recommendations`, {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);

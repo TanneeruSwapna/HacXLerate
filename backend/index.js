@@ -9,6 +9,9 @@ const os = require('os');
 const logger = require('./logger');
 require('dotenv').config();
 
+
+
+
 const authRoutes = require('./routes/auth');
 const productsRoutes = require('./routes/products');
 const recommendationsRoutes = require('./routes/recommendations');
@@ -35,9 +38,31 @@ if (cluster.isMaster) {
   const server = http.createServer(app);
   const io = require('socket.io')(server, { cors: { origin: '*' } });
 
+  
   app.use(helmet()); // Security headers
-  app.use(cors());
-  app.use(express.json());
+  // Replace the current app.use(cors());
+const allowedOrigins = [
+    'http://localhost:5173',          // Your local frontend development address
+    'http://localhost:3000',          // A common local address
+    'https://lume-sigma.vercel.app/' // If you published your frontend
+];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or direct backend access)
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true, // Important for cookies/sessions, though you use JWT
+    optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+app.use(express.json());
 
   // Connect to MongoDB
   mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })

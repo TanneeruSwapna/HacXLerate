@@ -13,7 +13,7 @@ function CartPage() {
     const fetchCart = async () => {
         try {
             setLoading(true);
-            const res = await axios.get('http://localhost:5000/api/cart', { headers: { Authorization: `Bearer ${token}` } });
+            const res = await axios.get(`${API_BASE_URL}/cart`, { headers: { Authorization: `Bearer ${token}` } });
             setCart(res.data);
             setError(null);
         } catch (err) {
@@ -33,9 +33,9 @@ function CartPage() {
 
     const handleQuantityChange = async (productId, newQty) => {
         try {
-            await axios.put('http://localhost:5000/api/cart/update', { productId, quantity: newQty }, { headers: { Authorization: `Bearer ${token}` } });
+            await axios.put(`${API_BASE_URL}/cart/update`, { productId, quantity: newQty }, { headers: { Authorization: `Bearer ${token}` } });
             fetchCart();
-            const total = (await axios.get('http://localhost:5000/api/cart', { headers: { Authorization: `Bearer ${token}` } })).data.items.reduce((s, it) => s + (it.quantity || 0), 0);
+            const total = (await axios.get(`${API_BASE_URL}/cart`, { headers: { Authorization: `Bearer ${token}` } })).data.items.reduce((s, it) => s + (it.quantity || 0), 0);
             window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: total } }));
         } catch (err) {
             console.error('Failed to update quantity', err);
@@ -47,13 +47,13 @@ function CartPage() {
         try {
             // Prefer DELETE with productId in the URL (some envs strip DELETE bodies)
             try {
-                await axios.delete(`http://localhost:5000/api/cart/remove/${productId}`, { headers: { Authorization: `Bearer ${token}` } });
+                await axios.delete(`${API_BASE_URL}/cart/remove/${productId}`, { headers: { Authorization: `Bearer ${token}` } });
             } catch (err) {
                 // Fallback to POST /remove if DELETE with URL fails
-                await axios.post('http://localhost:5000/api/cart/remove', { productId }, { headers: { Authorization: `Bearer ${token}` } });
+                await axios.post(`${API_BASE_URL}/cart/remove`, { productId }, { headers: { Authorization: `Bearer ${token}` } });
             }
             await fetchCart();
-            const total = (await axios.get('http://localhost:5000/api/cart', { headers: { Authorization: `Bearer ${token}` } })).data.items.reduce((s, it) => s + (it.quantity || 0), 0);
+            const total = (await axios.get(`${API_BASE_URL}/cart`, { headers: { Authorization: `Bearer ${token}` } })).data.items.reduce((s, it) => s + (it.quantity || 0), 0);
             window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: total } }));
         } catch (err) {
             console.error('Failed to remove item', err);

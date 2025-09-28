@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './AddProduct.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
+
 function EditProduct({ product, onUpdated, onCancel }) {
     const [formData, setFormData] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -95,7 +98,7 @@ function EditProduct({ product, onUpdated, onCancel }) {
                 images: formData.images.filter((img) => img && img.trim())
             };
 
-            await axios.put(`http://localhost:5000/api/products/${product._id}`, submitData, {
+            await axios.put(`${API_BASE_URL}/products/${product._id}`, submitData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

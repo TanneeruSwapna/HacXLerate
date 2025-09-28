@@ -3,6 +3,10 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import './ProductCatalog.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
+console.log(API_BASE_URL);
+
 function ProductCatalog() {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
@@ -26,7 +30,7 @@ function ProductCatalog() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:5000/api/products', {
+      const response = await axios.get(`${API_BASE_URL }/products`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setProducts(response.data);
@@ -74,13 +78,13 @@ function ProductCatalog() {
   const handleAddToCart = async (productId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/cart/add',
+      await axios.post(`${API_BASE_URL}/cart/add`,
         { productId, quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       // Fetch cart to compute new count and broadcast update
       try {
-        const res = await axios.get('http://localhost:5000/api/cart', { headers: { Authorization: `Bearer ${token}` } });
+        const res = await axios.get(`${API_BASE_URL}/cart`, { headers: { Authorization: `Bearer ${token}` } });
         const items = res.data.items || [];
         const total = items.reduce((s, it) => s + (it.quantity || 0), 0);
         window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: total } }));

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './AddProduct.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
 function AddProduct() {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -120,7 +122,7 @@ function AddProduct() {
                 images: formData.images.filter(img => img.trim())
             };
 
-            await axios.post('http://localhost:5000/api/products', submitData, {
+            await axios.post(`${API_BASE_URL}/products`, submitData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

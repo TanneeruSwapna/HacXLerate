@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Cart.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
+
 function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -11,7 +14,7 @@ function Cart() {
     const fetchCart = async () => {
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get('http://localhost:5000/api/cart', {
+        const res = await axios.get(`${API_BASE_URL}/cart`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setCartItems(res.data.items || []);
@@ -30,7 +33,7 @@ function Cart() {
     setUpdating(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/cart/update',
+      await axios.put(`${API_BASE_URL}/cart/update`,
         { productId, quantity: newQuantity },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -54,7 +57,7 @@ function Cart() {
     try {
       const token = localStorage.getItem('token');
       console.log('Removing item with productId:', productId);
-      await axios.delete('http://localhost:5000/api/cart/remove', {
+      await axios.delete(`${API_BASE_URL}/cart/remove`, {
         data: { productId },
         headers: { Authorization: `Bearer ${token}` }
       });

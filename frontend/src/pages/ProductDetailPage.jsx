@@ -3,6 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import './ProductDetailPage.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
+
 export default function ProductDetailPage() {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
@@ -17,7 +20,7 @@ export default function ProductDetailPage() {
     useEffect(() => {
         const fetchProduct = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/api/products/${id}`);
+                const res = await axios.get(`${API_BASE_URL}/products/${id}`);
                 setProduct(res.data);
                 setForm({
                     name: res.data.name || '',

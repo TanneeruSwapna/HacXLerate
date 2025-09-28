@@ -22,7 +22,7 @@ function DashboardPage() {
         try {
             setLoading(true);
             const token = localStorage.getItem('token');
-            const response = await axios.get('http://localhost:5000/api/products/my-products', {
+            const response = await axios.get(`${API_BASE_URL}/products/my-products`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setMyProducts(response.data);

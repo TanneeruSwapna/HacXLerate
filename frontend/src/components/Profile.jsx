@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Profile.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
+
 function Profile() {
     const [user, setUser] = useState(null);
     const [editing, setEditing] = useState(false);
@@ -36,7 +39,7 @@ function Profile() {
         const fetchUser = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await axios.get('http://localhost:5000/api/user/profile', {
+                const res = await axios.get(`${API_BASE_URL}/user/profile`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 setUser(res.data);
@@ -51,7 +54,7 @@ function Profile() {
     const handleSave = async () => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put('http://localhost:5000/api/user/profile', formData, {
+            await axios.put(`${API_BASE_URL}/user/profile`, formData, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             setUser(formData);
