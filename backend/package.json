@@ -4,13 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-<<<<<<< HEAD
-    "start": "node index.js  nodemon index.js , npm start"
-
-=======
     "start": "node index.js",
     "dev": "nodemon index.js"
->>>>>>> a4c1c7e39e26e152ab0491e68fff3b6d00ce135e
   },
   "keywords": [],
   "author": "",

@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import './CartPage.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
+
 function CartPage() {
     const [cart, setCart] = useState(null);
     const [loading, setLoading] = useState(true);

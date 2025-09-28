@@ -5,6 +5,9 @@ import AddProduct from '../components/AddProduct';
 import EditProduct from '../components/EditProduct';
 import './DashboardPage.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+
+
 function DashboardPage() {
     const [showAddProduct, setShowAddProduct] = useState(false);
     const [myProducts, setMyProducts] = useState([]);
