@@ -7,6 +7,7 @@ const socket = io('http://localhost:5000');
 
 function Recommendations() {
   const [recs, setRecs] = useState([]);
+  const [adding, setAdding] = useState({});
   const [loading, setLoading] = useState(true);
   const [filterType, setFilterType] = useState('all');
   const [sortBy, setSortBy] = useState('score');
@@ -65,6 +66,54 @@ function Recommendations() {
     if (score > 0.7) return 'Highly Recommended';
     if (score > 0.4) return 'Recommended';
     return 'Consider';
+  };
+
+  const resolveProductId = async (rec) => {
+    // Try common id fields first
+    if (rec.productId) return rec.productId;
+    if (rec.id) return rec.id;
+    if (rec._id) return rec._id;
+
+    // Fallback: try to lookup product by name
+    try {
+      const token = localStorage.getItem('token');
+      const res = await axios.get('http://localhost:5000/api/products?search=' + encodeURIComponent(rec.product), {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const list = res.data || [];
+      if (list.length > 0) return list[0]._id || list[0].id;
+    } catch (err) {
+      console.warn('Failed to resolve product id for recommendation', err);
+    }
+    return null;
+  };
+
+  const handleAddToCart = async (rec, idx) => {
+    const key = String(idx);
+    setAdding((s) => ({ ...s, [key]: true }));
+    try {
+      const productId = await resolveProductId(rec);
+      if (!productId) {
+        alert('Cannot find product id for this recommendation');
+        return;
+      }
+
+      const token = localStorage.getItem('token');
+      await axios.post('http://localhost:5000/api/cart/add', { productId, quantity: 1 }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      // Refresh cart count for navbar
+      const cartRes = await axios.get('http://localhost:5000/api/cart', { headers: { Authorization: `Bearer ${token}` } });
+      const total = (cartRes.data.items || []).reduce((s, it) => s + (it.quantity || 0), 0);
+      window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: total } }));
+      alert('Added to cart');
+    } catch (err) {
+      console.error('Failed to add recommendation to cart', err);
+      alert('Failed to add to cart');
+    } finally {
+      setAdding((s) => ({ ...s, [key]: false }));
+    }
   };
 
   if (loading) return <div className="loading">Loading recommendations...</div>;
@@ -136,7 +185,9 @@ function Recommendations() {
 
             <div className="rec-actions">
               <button className="view-product-btn">View Product</button>
-              <button className="add-to-cart-btn">Add to Cart</button>
+              <button className="add-to-cart-btn" onClick={() => handleAddToCart(rec, index)} disabled={!!adding[String(index)]}>
+                {adding[String(index)] ? 'Adding...' : 'Add to Cart'}
+              </button>
               <button className="save-btn">Save for Later</button>
             </div>
           </div>

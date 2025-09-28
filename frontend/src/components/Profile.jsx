@@ -61,6 +61,12 @@ function Profile() {
         }
     };
 
+    const handleCancel = () => {
+        // Revert any changes made while editing
+        setFormData(user);
+        setEditing(false);
+    };
+
     const handleInputChange = (path, value) => {
         const keys = path.split('.');
         const newData = { ...formData };
@@ -80,12 +86,23 @@ function Profile() {
         <div className="profile-container">
             <div className="profile-header">
                 <h1>Business Profile</h1>
-                <button
-                    className={editing ? 'save-btn' : 'edit-btn'}
-                    onClick={editing ? handleSave : () => setEditing(true)}
-                >
-                    {editing ? 'Save Changes' : 'Edit Profile'}
-                </button>
+                <div className="profile-actions">
+                    {!editing && (
+                        <button className="edit-btn" onClick={() => setEditing(true)}>
+                            Edit Profile
+                        </button>
+                    )}
+                    {editing && (
+                        <>
+                            <button className="save-btn" onClick={handleSave}>
+                                Save Changes
+                            </button>
+                            <button className="cancel-btn" onClick={handleCancel}>
+                                Cancel
+                            </button>
+                        </>
+                    )}
+                </div>
             </div>
 
             <div className="profile-sections">

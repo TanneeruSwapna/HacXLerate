@@ -3,6 +3,16 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 2rem;
+    padding:20px;
+}
+
+.page-container{
+    padding:20px;
+    min-height: 80vh;
+}
+
+.page-header{
+    margin-top:5%;
 }
 
 .cart-items {
@@ -30,11 +40,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    /* ensure images are clipped to the box */
 }
 
 .placeholder-icon {
     font-size: 2rem;
     color: #9ca3af;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* keep aspect ratio and fill the box */
+    display: block;
 }
 
 .item-details {
@@ -172,8 +192,8 @@
     }
 
     .cart-item {
-        grid-template-columns: 1fr;
-        text-align: center;
+        grid-template-columns: 80px 1fr;
+        align-items: center;
         gap: 1rem;
     }
 

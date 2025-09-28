@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import AddProduct from '../components/AddProduct';
+import EditProduct from '../components/EditProduct';
 import './DashboardPage.css';
 
 function DashboardPage() {
@@ -9,6 +10,7 @@ function DashboardPage() {
     const [myProducts, setMyProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [activeTab, setActiveTab] = useState('dashboard'); // 'dashboard', 'add-product', 'my-products'
+    const [editingProduct, setEditingProduct] = useState(null);
 
     useEffect(() => {
         if (activeTab === 'my-products') {
@@ -34,6 +36,15 @@ function DashboardPage() {
     const handleProductAdded = () => {
         setActiveTab('my-products');
         fetchMyProducts();
+    };
+
+    const handleEditClick = (product) => {
+        setEditingProduct(product);
+    };
+
+    const handleUpdated = async () => {
+        setEditingProduct(null);
+        await fetchMyProducts();
     };
 
     const renderContent = () => {
@@ -88,7 +99,7 @@ function DashboardPage() {
                                                 <span className="product-price">${product.price}</span>
                                             </div>
                                             <div className="product-actions">
-                                                <button className="btn btn-secondary">Edit</button>
+                                                <button className="btn btn-secondary" onClick={() => handleEditClick(product)}>Edit</button>
                                                 <button className="btn btn-danger">Delete</button>
                                             </div>
                                         </div>
@@ -201,6 +212,13 @@ function DashboardPage() {
             </div>
 
             {renderContent()}
+            {editingProduct && (
+                <EditProduct
+                    product={editingProduct}
+                    onUpdated={handleUpdated}
+                    onCancel={() => setEditingProduct(null)}
+                />
+            )}
         </div>
     );
 }

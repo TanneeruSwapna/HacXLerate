@@ -78,6 +78,16 @@ function ProductCatalog() {
         { productId, quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+      // Fetch cart to compute new count and broadcast update
+      try {
+        const res = await axios.get('http://localhost:5000/api/cart', { headers: { Authorization: `Bearer ${token}` } });
+        const items = res.data.items || [];
+        const total = items.reduce((s, it) => s + (it.quantity || 0), 0);
+        window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: total } }));
+      } catch (e) {
+        // fallback broadcast
+        window.dispatchEvent(new CustomEvent('cart-updated', { detail: { count: null } }));
+      }
       alert('Product added to cart!');
     } catch (error) {
       console.error('Error adding to cart:', error);
@@ -162,14 +172,16 @@ function ProductCatalog() {
           {filteredProducts.map((product) => (
             <div key={product._id} className="product-card">
               <div className="product-image">
-                {product.images && product.images.length > 0 ? (
-                  <img src={product.images[0]} alt={product.name} />
-                ) : (
-                  <span className="placeholder-icon">📦</span>
-                )}
+                <Link to={`/products/${product._id}`}>
+                  {product.images && product.images.length > 0 ? (
+                    <img src={product.images[0]} alt={product.name} />
+                  ) : (
+                    <span className="placeholder-icon">📦</span>
+                  )}
+                </Link>
               </div>
               <div className="product-info">
-                <h3 className="product-name">{product.name}</h3>
+                <h3 className="product-name"><Link to={`/products/${product._id}`}>{product.name}</Link></h3>
                 {product.description && (
                   <p className="product-description">{product.description}</p>
                 )}

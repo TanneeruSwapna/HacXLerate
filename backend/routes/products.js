@@ -14,6 +14,18 @@ router.get('/', auth, async (req, res, next) => {
   }
 });
 
+// Get single product by id (public)
+router.get('/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).populate('createdBy', 'name email');
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    res.json(product);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // Create a new product
 router.post('/', auth, async (req, res, next) => {
   try {

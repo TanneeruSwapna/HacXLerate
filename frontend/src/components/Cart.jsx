@@ -53,6 +53,7 @@ function Cart() {
     setUpdating(true);
     try {
       const token = localStorage.getItem('token');
+      console.log('Removing item with productId:', productId);
       await axios.delete('http://localhost:5000/api/cart/remove', {
         data: { productId },
         headers: { Authorization: `Bearer ${token}` }
